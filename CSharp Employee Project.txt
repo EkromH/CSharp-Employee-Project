@@ -1,0 +1,98 @@
+using System;
+using System.Collections.Generic;
+
+// Enum for Designations
+public enum Designation
+{
+    CEO = 1,
+    Manager = 2,   
+    Officer = 3,
+    Pion = 4
+}
+
+// Person interface
+public interface IPerson
+{
+    void DisplayInfo();
+}
+
+// Employee sealed class inheriting Person interface
+public sealed class Employee : IPerson
+{
+    // Properties
+    public int ID { get; set; }
+    public string Name { get; set; }
+    public Designation EmployeeDesignation { get; set; }
+    public DateTime DateOfBirth { get; set; }
+    public DateTime JoiningDate { get; set; }
+    public List<string> RolePlays { get; set; }
+
+    // Constructor
+    public Employee(int id, string name, Designation designation, DateTime dob, DateTime joiningDate, List<string> rolePlays)
+    {
+        ID = id;
+        Name = name;
+        EmployeeDesignation = designation;
+        DateOfBirth = dob;
+        JoiningDate = joiningDate;
+        RolePlays = rolePlays;
+    }
+
+    // Display method to implement the Person interface
+    public void DisplayInfo()
+    {
+        Console.WriteLine($"ID: {ID}");
+        Console.WriteLine($"Name: {Name}");
+        Console.WriteLine($"Designation: {EmployeeDesignation}");
+        Console.WriteLine($"Date of Birth: {DateOfBirth.ToShortDateString()}");
+        Console.WriteLine($"Joining Date: {JoiningDate.ToShortDateString()}");
+        Console.WriteLine($"Role Plays: {string.Join(", ", RolePlays)}");
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        // User Input
+        Console.Write("Enter Employee ID: ");
+        int id = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write("Enter Employee Name: ");
+        string name = Console.ReadLine();
+
+        Console.WriteLine("Choose Employee Designation:");
+        Console.WriteLine("1. CEO");
+        Console.WriteLine("2. Manager");
+        Console.WriteLine("3. Officer");
+        Console.WriteLine("4. Pion");
+        Console.Write("Enter the number corresponding to the designation: ");
+        Designation designation = (Designation)Enum.Parse(typeof(Designation), Console.ReadLine());
+
+        Console.Write("Enter Date of Birth (yyyy-mm-dd): ");
+        DateTime dob = DateTime.Parse(Console.ReadLine());
+
+        Console.Write("Enter Joining Date (yyyy-mm-dd): ");
+        DateTime joiningDate = DateTime.Parse(Console.ReadLine());
+
+        List<string> rolePlays = new List<string>();
+        string role;
+        do
+        {
+            Console.Write("Enter Role Play (or type '0' to finish): ");
+            role = Console.ReadLine();
+            if (role.ToLower() != "0")
+            {
+                rolePlays.Add(role);
+            }
+        } while (role.ToLower() != "0");
+
+        // Create Employee object
+        Employee employee = new Employee(id, name, designation, dob, joiningDate, rolePlays);
+
+        // Display Employee information
+        Console.ForegroundColor= ConsoleColor.DarkYellow;
+        Console.WriteLine("\nEmployee Information:");
+        employee.DisplayInfo();
+    }
+}
